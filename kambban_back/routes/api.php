@@ -14,6 +14,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
 });
+
+Route::group(['middleware' => 'auth:api'], function (){
+    Route::group(['prefix' => 'tiporequest'], function (){
+        Route::get('/','RequestTypeController@index');
+        Route::get('/{id}','RequestTypeController@find');
+        Route::post('/','RequestTypeController@store');
+        Route::put('/{id}','RequestTypeController@update');
+        Route::delete('/{id}','RequestTypeController@destroy');
+    });
+    Route::group(['prefix' => 'categorias'], function (){
+        Route::get('/','CategoryController@index');
+        Route::get('/{id}','CategoryController@find');
+        Route::post('/','CategoryController@store');
+        Route::put('/{id}','CategoryController@update');
+        Route::delete('/{id}','CategoryController@destroy');
+    });
+
+    Route::group(['prefix' => 'requests'], function (){
+        Route::get('/','RequestController@index');
+        Route::get('/{id}','RequestController@find');
+        Route::post('/','RequestController@store');
+        Route::put('/{id}','RequestController@update');
+        Route::delete('/{id}','RequestController@destroy');
+    });
+});
+
+
