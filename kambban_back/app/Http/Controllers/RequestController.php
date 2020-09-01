@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PaginateHelper;
 use App\Http\Requests\CreateRequestRequest;
+use App\Http\Requests\AnswerRequestRequest;
+use App\Http\Requests\RespondRequestRequest;
+
 use App\Repositories\RequestRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -241,6 +244,94 @@ class RequestController extends Controller
      * @return Response
      */
     public function update($id, CreateRequestRequest $request)
+    {
+        $modelo = \App\Models\Request::find($id);;
+        if (!$modelo) {
+            return response(['message' => 'No se encontró el registro.'], Response::HTTP_NOT_FOUND);
+        }
+        $modelo->fill($request->validated());
+        $modelo->save();
+        return response([$modelo], Response::HTTP_OK);
+    }
+
+     /**
+     * @OA\Put(
+     *     path="/request/{id}",
+     *     summary="Endpoint para actualizar las peticiones según su id",
+     *     tags={"TipoRequest"},
+     *     description="Actualiza una peticion segun su id",
+     *     security={{"passport": {}}},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="Body",
+     *                     type="string"
+     *                 ),
+     *                 example={"nombre":"Otra categoria"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="No se obtuvierón todos los campos que valida el request."
+     *     )
+     * )
+     * @param $id
+     * @param CreateRequestRequest $request
+     * @return Response
+     */
+
+    public function updatePeticion($id, AnswerRequestRequest $request)
+    {
+        $modelo = \App\Models\Request::find($id);;
+        if (!$modelo) {
+            return response(['message' => 'No se encontró el registro.'], Response::HTTP_NOT_FOUND);
+        }
+        $modelo->fill($request->validated());
+        $modelo->save();
+        return response([$modelo], Response::HTTP_OK);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/request/{id}",
+     *     summary="Endpoint para actualizar las respuestas según su id",
+     *     tags={"TipoRequest"},
+     *     description="Actualiza una respuesta segun su id",
+     *     security={{"passport": {}}},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="Body",
+     *                     type="string"
+     *                 ),
+     *                 example={"nombre":"Otra categoria"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="No se obtuvierón todos los campos que valida el request."
+     *     )
+     * )
+     * @param $id
+     * @param CreateRequestRequest $request
+     * @return Response
+     */
+
+    public function updateRespuesta($id, RespondRequestRequest $request)
     {
         $modelo = \App\Models\Request::find($id);;
         if (!$modelo) {
