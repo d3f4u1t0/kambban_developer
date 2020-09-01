@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth:api'], function (){
         Route::post('/','RequestController@store');
         Route::put('/{id}','RequestController@update');
         Route::delete('/{id}','RequestController@destroy');
+        Route::put('updatePeticion/{id}','RequestController@updatePeticion');
+        Route::put('updateRespuesta/{id}','RequestController@updateRespuesta');
     });
 });
 
